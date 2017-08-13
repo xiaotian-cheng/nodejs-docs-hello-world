@@ -1,12 +1,17 @@
-var http = require('http');
+var express         = require("express");
+var bodyParser      = require("body-parser");
 
-var server = http.createServer(function(request, response) {
+var app = express();
 
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.end("Hello World!");
+//config
+app.set('port', 80);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+// route
+app.use('/weixin', require('./wechat'));
+
+// start up server
+app.listen(app.get('port'), function () {
+    console.log('Server listening on:', app.get('port'));
 });
-
-var port = process.env.PORT || 1337;
-server.listen(port);
-
-console.log("Server running at http://localhost:%d", port);
